@@ -27,6 +27,10 @@ class Mars {
   constructor(properties = MARS_DEFAULT_PROPS) {
     this.properties = properties;
   }
+
+  getPlateauToLanded() {
+    return null;
+  }
 }
 
 module.exports = {
