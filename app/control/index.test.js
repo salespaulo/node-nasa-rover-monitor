@@ -17,53 +17,53 @@ test("Rover control instance", () => {
   expect(roverControl.plateau).not.toBeNull();
 });
 
-test("Rover control execute left command", () => {
+test("Rover control apply left command", () => {
   const mars = new Mars();
   const rover = new Rover();
   const plateau = mars.getPlateau();
 
   const roverControl = new RoverControl(rover, plateau);
 
-  const newRover = roverControl.execute("L");
+  const newRover = roverControl.apply("L");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);
   expect(newRover.orientation).toEqual("W");
 });
 
-test("Rover control execute right command", () => {
+test("Rover control apply right command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.execute("R");
+  const newRover = roverControl.apply("R");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);
   expect(newRover.orientation).toEqual("E");
 });
 
-test("Rover control execute move command", () => {
+test("Rover control apply move command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.execute("M");
+  const newRover = roverControl.apply("M");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y + 1);
   expect(newRover.orientation).toEqual("N");
 });
 
-test("Rover control execute invalid command", () => {
+test("Rover control apply invalid command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.execute("Invalid Command");
+  const newRover = roverControl.apply("Invalid Command");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);

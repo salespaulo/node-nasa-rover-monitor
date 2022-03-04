@@ -6,8 +6,6 @@
 
 const { Mars } = require("./index");
 
-const createDefaultMars = () => {};
-
 test("Mars getting default properties", () => {
   const mars = new Mars();
 

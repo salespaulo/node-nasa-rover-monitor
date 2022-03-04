@@ -27,7 +27,7 @@ class RoverControl {
     this.plateau = plateau;
   }
 
-  execute(command) {
+  apply(command) {
     const rover = this.rover;
     const plateau = this.plateau;
     const validCommand = COMMANDS.indexOf(command) >= 0 ? command : "I";

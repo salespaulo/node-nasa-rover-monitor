@@ -33,7 +33,7 @@ class CartesianPoint {
  * The plateau on Mars with bottom left corner and upper right corner
  * coordinates.
  */
-class Plateau {
+class MarsPlateau {
   /**
    * The security plateau on Mars and your limit corners.
    *
@@ -72,7 +72,7 @@ class Mars {
   /**
    * Gets random plateau on Mars with random coordinates to upper right corner.
    *
-   * @returns {Plateau} The instance of random plateau.
+   * @returns {MarsPlateau} The instance of random plateau.
    */
   randomPlateau() {
     const randomNumberX = this._randomUpperRightCoordinate();
@@ -88,7 +88,7 @@ class Mars {
    *
    * @param upperRightX The horizontal 2D coordinates, default is min upper right.
    * @param upperRightY The vertical 2D coordinates, default is max upper right.
-   * @returns {Plateau} The instance of security plateau on Mars.
+   * @returns {MarsPlateau} The instance of security plateau on Mars.
    */
   getPlateau(
     upperRightX = this.properties.limits.upperRight.min,
@@ -111,7 +111,7 @@ class Mars {
     }
 
     const upperRightPoint = new CartesianPoint(upperRightX, upperRightY);
-    return new Plateau(upperRightPoint);
+    return new MarsPlateau(upperRightPoint);
   }
 
   _randomUpperRightCoordinate() {
@@ -121,4 +121,6 @@ class Mars {
 
 module.exports = {
   Mars,
+  MarsPlateau,
+  CartesianPoint,
 };

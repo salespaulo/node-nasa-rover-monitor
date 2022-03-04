@@ -1,4 +1,4 @@
-/*
+/**
  * Represents the squad of robotic rovers landed by NASA.
  *
  * A rover's position and location is represented by a combination of x
@@ -6,7 +6,27 @@
  * compass points.
  */
 
+/**
+ * Rover orientation values:
+ *  - "N": North
+ *  - "S": South
+ *  - "E": East
+ *  - "W": West
+ */
+const ORIENTATION = ["N", "S", "E", "W"];
+
+/**
+ * Rover that landed by NASA.
+ */
 class Rover {
+  /**
+   * Creates new rover with orientation and position.
+   *
+   * @param x The horizontal 2D coordinate.
+   * @param y The vertical 2D coordinate.
+   * @param orientation The rover orientation, North, South, East or West.
+   * @see ORIENTATION
+   */
   constructor(x = 0, y = 0, orientation = "N") {
     this.x = this._coordinate(x);
     this.y = this._coordinate(y);
@@ -18,7 +38,7 @@ class Rover {
   }
 
   _orientation(orientation) {
-    return ["N", "S", "E", "W"].indexOf(orientation) > 0 ? orientation : "N";
+    return ORIENTATION.indexOf(orientation) > 0 ? orientation : "N";
   }
 }
 

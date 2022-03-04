@@ -20,22 +20,18 @@ const move = (rover, plateau) => {
       return y + 1 > upperRight.y
         ? new Rover(x, 0, orientation)
         : new Rover(x, y + 1, orientation);
-      break;
     case "S":
       return y - 1 < 0
         ? new Rover(x, upperRight.y, orientation)
         : new Rover(x, y - 1, orientation);
-      break;
     case "E":
       return x + 1 > upperRight.x
         ? new Rover(0, y, orientation)
         : new Rover(x + 1, y, orientation);
-      break;
     case "W":
       return x - 1 < 0
         ? new Rover(upperRight.x, y, orientation)
         : new Rover(x - 1, y, orientation);
-      break;
   }
 };
 

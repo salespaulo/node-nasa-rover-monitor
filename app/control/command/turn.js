@@ -17,16 +17,12 @@ const turn = (rover, left = false) => {
   switch (orientation) {
     case "N":
       return new Rover(x, y, left ? "W" : "E");
-      break;
     case "S":
       return new Rover(x, y, left ? "E" : "W");
-      break;
     case "E":
       return new Rover(x, y, left ? "N" : "S");
-      break;
     case "W":
       return new Rover(x, y, left ? "S" : "N");
-      break;
   }
 };
 
