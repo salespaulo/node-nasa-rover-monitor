@@ -1,0 +1,21 @@
+{
+  "name": "nasa-rover-monitor",
+  "main": "app/index.js",
+  "version": "1.0.0",
+  "description": "NASA Rover Monitor Application",
+  "author": "Paulo R. A. Sales",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "foxbit",
+    "test",
+    "nasa",
+    "rover",
+    "mars"
+  ],
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
