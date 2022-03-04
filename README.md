@@ -1,9 +1,33 @@
 ## Nasa Rover Monitor
 
+Monitor and control the squad of rovers landed by NASA on a plateau in planet Mars.
+
+An amazing adventure! 
+
+I hope you enjoy!
+
+### Test it
+
+Clone this repository and execute above commands:
+
+```
+npm install
+npm test
+```
+
+### Test watch it
+
+Clone this repository and execute above commands:
+
+```
+npm install
+npm run watch
+```
+
 ### Input
 
 The first line of input is the upper-right coordinates of the
-plateau, the lower-left coordinates are assumed to be 0,0.
+plateau, the lower-turn coordinates are assumed to be 0,0.
 
 The rest of the input is information pertaining to the rovers that
 have been deployed. Each rover has two lines of input. The first line
@@ -44,8 +68,6 @@ MMRMMRMRRM
 1 3 N
 5 1 E
 ```
-
-### Configuration
 
 ### Dependencies
 

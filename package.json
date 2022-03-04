@@ -5,8 +5,10 @@
   "description": "NASA Rover Monitor Application",
   "author": "Paulo R. A. Sales",
   "license": "MIT",
+  "prettier": "prettier",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "watch": "jest --watch"
   },
   "keywords": [
     "foxbit",
@@ -16,6 +18,7 @@
     "mars"
   ],
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1"
   }
 }
