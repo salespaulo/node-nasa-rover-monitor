@@ -4,24 +4,79 @@
  * Here will see the NASA tests simulates Mars planet into secret lab.
  */
 
-const {
-  Mars,
-  MarsPlateau,
-  MARS_DEFAULT_PROPS,
-  CartesianPoint,
-} = require("./index");
+const { Mars } = require("./index");
 
-test("Mars properties default when not pass properties to constructor", () => {
+const createDefaultMars = () => {};
+
+test("Mars getting default properties", () => {
   const mars = new Mars();
-  expect(mars.properties).toBe(MARS_DEFAULT_PROPS);
+
+  expect(mars).not.toBeNull();
+  expect(mars.properties).toBe(mars.defaultProperties());
 });
 
-test("Mars getting better plateau to landed the squad of rovers", () => {
+test("Mars getting default plateau", () => {
   const mars = new Mars();
-  const defaultPlateau = mars.getPlateauToLanded();
+  const defaultPlateau = mars.getPlateau();
 
   expect(defaultPlateau).not.toBeNull();
-  expect(defaultPlateau).toStrictEqual(new MarsPlateau());
-  expect(defaultPlateau.upperRight).toEqual(new CartesianPoint(5, 5));
-  expect(defaultPlateau.bottomLeft).toEqual(new CartesianPoint(0, 0));
+  expect(defaultPlateau.upperRight).not.toBeNull();
+  expect(defaultPlateau.bottomLeft).not.toBeNull();
+});
+
+test("Mars getting default plateau coordinates", () => {
+  const mars = new Mars();
+  const defaultPlateau = mars.getPlateau();
+
+  expect(defaultPlateau.upperRight.x).toBe(
+    mars.properties.limits.upperRight.min
+  );
+  expect(defaultPlateau.upperRight.y).toBe(
+    mars.properties.limits.upperRight.min
+  );
+  expect(defaultPlateau.bottomLeft.x).toEqual(0);
+  expect(defaultPlateau.bottomLeft.y).toEqual(0);
+});
+
+test("Mars getting random plateau coordinates", () => {
+  const mars = new Mars();
+  const randomPlateau = mars.randomPlateau();
+
+  expect(randomPlateau.upperRight.x >= mars.properties.limits.upperRight.min);
+  expect(randomPlateau.upperRight.y >= mars.properties.limits.upperRight.min);
+  expect(randomPlateau.upperRight.x <= mars.properties.limits.upperRight.max);
+  expect(randomPlateau.upperRight.y <= mars.properties.limits.upperRight.max);
+
+  expect(randomPlateau.bottomLeft.x).toEqual(0);
+  expect(randomPlateau.bottomLeft.y).toEqual(0);
+});
+
+test("Mars getting custom plateau coordinates", () => {
+  const mars = new Mars();
+  const customPlateau = mars.getPlateau(10, 5);
+
+  expect(customPlateau.upperRight.x).toEqual(10);
+  expect(customPlateau.upperRight.y).toEqual(5);
+  expect(customPlateau.bottomLeft.x).toEqual(0);
+  expect(customPlateau.bottomLeft.y).toEqual(0);
+});
+
+test("Mars getting custom exceed max limits plateau coordinates", () => {
+  const mars = new Mars();
+  const customPlateau = mars.getPlateau(10000, 10000);
+
+  expect(customPlateau.upperRight.x).toEqual(100);
+  expect(customPlateau.upperRight.y).toEqual(100);
+  expect(customPlateau.bottomLeft.x).toEqual(0);
+  expect(customPlateau.bottomLeft.y).toEqual(0);
+});
+
+test("Mars getting custom exceed min limits plateau coordinates", () => {
+  const mars = new Mars();
+  const customPlateau = mars.getPlateau(1, 1);
+
+  expect(customPlateau.upperRight.x).toEqual(5);
+  expect(customPlateau.upperRight.y).toEqual(5);
+  expect(customPlateau.bottomLeft.x).toEqual(0);
+  expect(customPlateau.bottomLeft.y).toEqual(0);
 });
