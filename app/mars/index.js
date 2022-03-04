@@ -15,6 +15,32 @@ const MARS_DEFAULT_PROPS = {
 };
 
 /**
+ * Cartesian point represented by coordinates x and y.
+ */
+class CartesianPoint {
+  /**
+   * Cartesian coordinates x and y.
+   *
+   * @param x The horizontal 2D grid.
+   * @param y The vertical 2D grid.
+   */
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class MarsPlateau {
+  constructor(
+    upperRight = new CartesianPoint(5, 5),
+    bottomLeft = new CartesianPoint(0, 0)
+  ) {
+    this.upperRight = upperRight;
+    this.bottomLeft = bottomLeft;
+  }
+}
+
+/**
  * Planet Mars and your plateaus to land the rovers.
  *
  * This planet already have default properties that
@@ -29,11 +55,13 @@ class Mars {
   }
 
   getPlateauToLanded() {
-    return null;
+    return new MarsPlateau();
   }
 }
 
 module.exports = {
+  CartesianPoint,
   MARS_DEFAULT_PROPS,
+  MarsPlateau,
   Mars,
 };
