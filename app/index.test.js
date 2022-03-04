@@ -17,10 +17,10 @@ test("Rover app start with letters null", () => {
   );
 });
 
-test("Rover app start with letters 5 5", () => {
+test("Rover app start with letters only, 5 5 ENTER", () => {
   const roverApp = new RoverApplication();
 
-  expect(() => roverApp.start("5 5")).toThrow(
+  expect(() => roverApp.start("5 5\n")).toThrow(
     new RoverAppInvalidCommandsError(1)
   );
 });
