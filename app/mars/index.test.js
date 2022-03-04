@@ -4,8 +4,7 @@
  * Here will see the NASA tests simulates Mars planet into secret lab.
  */
 
-const MarsModule = require("./index");
-const { Mars, MARS_DEFAULT_PROPS } = MarsModule;
+const { Mars, MARS_DEFAULT_PROPS } = require("./index");
 
 test("Mars properties default when not pass properties to constructor", () => {
   const mars = new Mars();
