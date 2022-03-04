@@ -6,4 +6,10 @@
  * compass points.
  */
 
-module.exports = {};
+class Rover {
+  constructor() {}
+}
+
+module.exports = {
+  Rover,
+};
