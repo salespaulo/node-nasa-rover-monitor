@@ -22,7 +22,7 @@ const move = (rover, plateau) => {
         : new Rover(x, y + 1, orientation);
       break;
     case "S":
-      return y - 1
+      return y - 1 < 0
         ? new Rover(x, upperRight.y, orientation)
         : new Rover(x, y - 1, orientation);
       break;
