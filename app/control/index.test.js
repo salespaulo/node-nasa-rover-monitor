@@ -17,53 +17,53 @@ test("Rover control instance", () => {
   expect(roverControl.plateau).not.toBeNull();
 });
 
-test("Rover control apply left command", () => {
+test("Rover control execute left command", () => {
   const mars = new Mars();
   const rover = new Rover();
   const plateau = mars.getPlateau();
 
   const roverControl = new RoverControl(rover, plateau);
 
-  const newRover = roverControl.apply("L");
+  const { rover: newRover } = roverControl.execute("L");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);
   expect(newRover.orientation).toEqual("W");
 });
 
-test("Rover control apply right command", () => {
+test("Rover control execute right command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.apply("R");
+  const { rover: newRover } = roverControl.execute("R");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);
   expect(newRover.orientation).toEqual("E");
 });
 
-test("Rover control apply move command", () => {
+test("Rover control execute move command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.apply("M");
+  const { rover: newRover } = roverControl.execute("M");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y + 1);
   expect(newRover.orientation).toEqual("N");
 });
 
-test("Rover control apply invalid command", () => {
+test("Rover control execute invalid command", () => {
   const mars = new Mars();
   const plateau = mars.getPlateau();
   const rover = new Rover();
 
   const roverControl = new RoverControl(rover, plateau);
-  const newRover = roverControl.apply("Invalid Command");
+  const { rover: newRover } = roverControl.execute("Invalid Command");
 
   expect(newRover.x).toEqual(rover.x);
   expect(newRover.y).toEqual(rover.y);
