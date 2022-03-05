@@ -19,6 +19,13 @@ const { COMMANDS } = require("./control/command");
 const CMD_SEPARATOR = " ";
 const CMD_END = "\n";
 
+class RoverAppAlreadyExistsError extends Error {
+  constructor(rover) {
+    super(
+      `NASA Rover Application: Rover already exists in position x=${rover.x} and y=${rover.y}`
+    );
+  }
+}
 class RoverAppSyntaxCommandsError extends Error {
   /**
    * Rover app invalid commands error.
@@ -142,7 +149,6 @@ class RoverApplication {
         continue;
       }
 
-      const rover = this.parseToRover(commands[i]);
       const stringRoverCommands = commands[i + 1];
       const isNotRoverCommands =
         !stringRoverCommands.startsWith(COMMANDS[0]) &&
@@ -151,6 +157,18 @@ class RoverApplication {
 
       if (isNotRoverCommands) {
         throw new RoverAppSyntaxCommandsError(`Is invalid rover commands`);
+      }
+
+      const rover = this.parseToRover(commands[i]);
+      const alreadyHasRover = infoRovers.find((info) => {
+        const { control } = info;
+        const { x, y } = control.rover;
+
+        return rover.x === x && rover.y === y;
+      });
+
+      if (alreadyHasRover) {
+        throw new RoverAppAlreadyExistsError(rover);
       }
 
       const roverControl = roverMonitor.addRover(rover);

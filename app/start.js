@@ -78,12 +78,12 @@ roverApp.eventEmitter.on("on-rover-apply-command", (command) => {
 roverApp.eventEmitter.on("on-rover-complete-command", (control) => {
   const { rover, plateau } = control;
 
-  console.log(`${log} Rover commands complete on plateau:`, rover);
+  console.log(`${log} Rover complete commands on plateau:`, rover);
   print(plateau, rover);
 });
 
 const letters =
-  "10 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM\n1 2 N\nMLMMRMMMLLMMMMMMLMMMR";
+  "10 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM\n9 3 N\nMLMMRMMMLLMMMMMMLMMMR";
 const output = roverApp.start(letters);
 
 console.log(`${log} Output after command rovers:`);

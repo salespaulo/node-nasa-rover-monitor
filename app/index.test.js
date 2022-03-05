@@ -105,3 +105,11 @@ test("Rover app start with - FoxBit Test", () => {
 
   expect(output).toEqual("1 3 N\n5 1 E");
 });
+
+test("Rover app start with already rover in position", () => {
+  const roverApp = new RoverApplication();
+
+  const letters = "5 5\n1 2 N\nLMLMLMLMM\n1 2 E\nMMRMMRMRRM";
+
+  expect(() => roverApp.start(letters)).toThrow("Rover already exists");
+});
