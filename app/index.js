@@ -8,9 +8,12 @@
  * its current spot. 'M' means move forward one grid point, and maintain
  * the same heading.
  */
+const events = require("events");
+
 const { MarsPlateau, CartesianPoint } = require("./mars");
 const { Rover } = require("./rover");
 const { RoverMonitor } = require("./monitor");
+
 const { COMMANDS } = require("./control/command");
 
 const CMD_SEPARATOR = " ";
@@ -70,10 +73,13 @@ class RoverApplicationInfo {
  * ```
  */
 class RoverApplication {
+  constructor() {
+    this.eventEmitter = new events.EventEmitter();
+  }
   /**
-   * Start application with raw commands.
+   * Start application with letters command to apply in rovers on a plateau in planet Mars.
    *
-   * @param {string} letters Raw commands, separated by spaces and end by enter char.
+   * @param {string} letters Letters command, separated by spaces and end by enter char.
    */
   start(letters) {
     if (!letters) {
@@ -89,10 +95,10 @@ class RoverApplication {
     const plateauCmd = commands.shift();
     const plateau = this.parseToPlateau(plateauCmd);
 
-    const infoRovers = this.createInfoRovers(
-      new RoverMonitor(plateau),
-      commands
-    );
+    const monitor = new RoverMonitor(plateau);
+    this.eventEmitter.emit("on-plateau-monitor", plateau);
+
+    const infoRovers = this.createInfoRovers(monitor, commands);
 
     return this.createOutputRovers(infoRovers);
   }
@@ -107,11 +113,15 @@ class RoverApplication {
     const outputRovers = infoRovers.map((info) => {
       const { control, commands } = info;
 
-      commands.forEach((cmd) => control.execute(cmd));
+      commands.forEach((cmd) => {
+        control.execute(cmd);
+        this.eventEmitter.emit("on-rover-apply-command", { cmd, control });
+      });
 
       const { rover } = control;
       const { x, y, orientation } = rover;
 
+      this.eventEmitter.emit("on-rover-complete-command", control);
       return `${x} ${y} ${orientation}`;
     });
 
@@ -153,6 +163,7 @@ class RoverApplication {
       infoRovers.push(roverAppInfo);
     }
 
+    this.eventEmitter.emit("on-info-rovers", infoRovers);
     return infoRovers;
   }
 

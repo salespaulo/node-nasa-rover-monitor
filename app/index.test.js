@@ -99,6 +99,7 @@ test("Rover app start with correct letters commands", () => {
 
 test("Rover app start with - FoxBit Test", () => {
   const roverApp = new RoverApplication();
+
   const letters = "5 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM";
   const output = roverApp.start(letters);
 
