@@ -10,7 +10,7 @@ I hope you enjoy!
 
 The plateau representation in planet Mars is coordinates by:
 
-- Bottom left: `x=0` e `y=0` coordinates
+- Bottom left: `x=0` e `y=0` coordinates.
 - Upper right: Is a custom one coordinates.
 
 The rover position is the cartesian coordinates:
