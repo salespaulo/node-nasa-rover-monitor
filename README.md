@@ -6,6 +6,56 @@ An amazing adventure!
 
 I hope you enjoy!
 
+### Solution
+
+The rover position is the cartesian coordinates:
+
+- `x`: The horizontal 2D coordinate.
+- `y`: The vertical 2D coordinate.
+
+The rover orientation is the cardinal orientation:
+
+- `N`: The north orientation.
+- `S`: The south orientation.
+- `E`: The east orientation.
+- `W`: The west orientation.
+
+
+The rover commands is:
+
+- `L`: Turn left 90 degrees.
+- `R`: Turn right 90 degrees.
+- `M`: Move forward from rover orientation.
+
+The table below represents the solution:
+
+| Cmd/Ori   | North | South | East  | West  |
+|-----------|-------|-------|-------|-------|
+| **Left**  | West  | East  | North | South |
+| **Right** | East  | West  | South | North |
+| **Move**  | y + 1 | y - 1 | x + 1 | x - 1 |
+
+The legends to solution graph below:
+
+- `C(X)`: Rover command with value in `X`.
+- `O(Y)`: Rover orientation with value in `Y`.
+- `P(Z)`: Rover position with value in `Z`.
+
+```mermaid
+CL-->ON-->OW
+CR-->ON-->OE
+CL-->OS-->OE
+CR-->OS-->OW
+CL-->OE-->OS
+CR-->OE-->ON
+CL-->OW-->ON
+CR-->OW-->OS
+CM-->ON-->PY
+CM-->OS-->PY
+CM-->OE-->PX
+CM-->OW-->PX
+```
+
 ### Test it
 
 Clone this repository and execute above commands:
@@ -15,7 +65,7 @@ npm install
 npm test
 ```
 
-### Test watch it
+### Watch it
 
 Clone this repository and execute above commands:
 
