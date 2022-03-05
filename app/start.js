@@ -2,13 +2,14 @@
  * Starts rover application with visual ascii art.
  */
 
+const fs = require("fs");
 const { RoverApplication } = require("./index");
 
 const CHAR_HORIZONTAL = "=";
 const CHAR_VERTICAL = "|";
 const CHAR_SPACE = " ";
 
-const log = "NASA Rover App: ";
+const log = "NASA Rover App:";
 
 const print = (plateau, rover = null) => {
   const { upperRight } = plateau;
@@ -38,7 +39,7 @@ const print = (plateau, rover = null) => {
   const emptySlots2 = CHAR_SPACE.repeat(upperRight.x - x) + CHAR_VERTICAL;
 
   const xx = sy.map((v, i) => {
-    if (i === upperRight.y - y) {
+    if (i === Math.abs(upperRight.y - y)) {
       return v + emptySlots1 + orientation + emptySlots2;
     }
 
@@ -72,7 +73,7 @@ roverApp.eventEmitter.on("on-rover-apply-command", (command) => {
   const { cmd, control } = command;
   const { rover } = control;
 
-  //console.log(`${log} Rover command ${cmd} on plateau:`, rover);
+  console.log(`${log} Rover command ${cmd} on plateau:`, rover);
 });
 
 roverApp.eventEmitter.on("on-rover-complete-command", (control) => {
@@ -82,9 +83,14 @@ roverApp.eventEmitter.on("on-rover-complete-command", (control) => {
   print(plateau, rover);
 });
 
-const letters =
-  "10 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM\n9 3 N\nMLMMRMMMLLMMMMMMLMMMR";
-const output = roverApp.start(letters);
+if (process.argv.length < 3) {
+  console.error(`Uses: node ${__filename} [fileTxtToImport]`);
+  process.exit(1);
+}
 
-console.log(`${log} Output after command rovers:`);
+const filename = process.argv[2];
+const buffer = fs.readFileSync(filename);
+const output = roverApp.start(buffer.toString());
+
+console.log(`${log} Output rover monitor:`);
 console.log(output);

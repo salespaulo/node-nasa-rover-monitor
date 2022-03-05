@@ -113,3 +113,11 @@ test("Rover app start with already rover in position", () => {
 
   expect(() => roverApp.start(letters)).toThrow("Rover already exists");
 });
+
+test("Rover app start with rover in position result x=8 and y=8", () => {
+  const roverApp = new RoverApplication();
+
+  const letters = "10 5\n7 8 W\nMMMLLMMMM";
+  const output = roverApp.start(letters);
+  expect(output).toEqual("8 8 E");
+});

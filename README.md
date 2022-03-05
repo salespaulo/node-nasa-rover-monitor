@@ -6,6 +6,35 @@ An amazing adventure!
 
 I hope you enjoy!
 
+### Test it
+
+Clone this repository and execute above commands:
+
+```
+npm install
+npm test
+```
+
+### Watch it
+
+Clone this repository and execute above commands:
+
+```
+npm install
+npm run watch
+```
+
+### Importing text file
+
+To import text file execute `app/start` script passing path to file commands.
+
+```
+npm install
+node app/start ./import-data-test.txt
+```
+
+> It uses the text file for testing, this is located into project [here](./import-data-test.txt).
+
 ### Solution
 
 The plateau representation in planet Mars is coordinates by:
@@ -74,24 +103,6 @@ CM(Command Move) -->|on rover in| ON(Orientation North) -->|changes rover to| PY
 CM(Command Move) -->|on rover in| OS(Orientation South) -->|changes rover to| PYM(Position y - 1);
 CM(Command Move) -->|on rover in| OE(Orientation East) -->|changes rover to| PXP(Position x + 1);
 CM(Command Move) -->|on rover in| OW(Orientation West) -->|changes rover to| PXM(Position x - 1);
-```
-
-### Test it
-
-Clone this repository and execute above commands:
-
-```
-npm install
-npm test
-```
-
-### Watch it
-
-Clone this repository and execute above commands:
-
-```
-npm install
-npm run watch
 ```
 
 ### Input
