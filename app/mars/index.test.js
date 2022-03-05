@@ -6,13 +6,6 @@
 
 const { Mars } = require("./index");
 
-test("Mars getting default properties", () => {
-  const mars = new Mars();
-
-  expect(mars).not.toBeNull();
-  expect(mars.properties).toBe(mars.defaultProperties());
-});
-
 test("Mars getting default plateau", () => {
   const mars = new Mars();
   const defaultPlateau = mars.getPlateau();

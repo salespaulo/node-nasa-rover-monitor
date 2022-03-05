@@ -36,3 +36,19 @@ test("Rover getting invalid custom position and orientation to be located", () =
   expect(defaultRover.y).toEqual(0);
   expect(defaultRover.orientation).toEqual("N");
 });
+
+test("Rover getting invalid position x to be located", () => {
+  const defaultRover = new Rover(-10, 10, "N");
+
+  expect(defaultRover.x).toEqual(0);
+  expect(defaultRover.y).toEqual(10);
+  expect(defaultRover.orientation).toEqual("N");
+});
+
+test("Rover getting invalid position y to be located", () => {
+  const defaultRover = new Rover(10, -10, "N");
+
+  expect(defaultRover.x).toEqual(10);
+  expect(defaultRover.y).toEqual(0);
+  expect(defaultRover.orientation).toEqual("N");
+});

@@ -65,10 +65,6 @@ class Mars {
     this.properties = properties;
   }
 
-  defaultProperties() {
-    return MARS_DEFAULT_PROPS;
-  }
-
   /**
    * Gets random plateau on Mars with random coordinates to upper right corner.
    *
