@@ -41,19 +41,34 @@ The legends to solution graph below:
 - `O(Y)`: Rover orientation with value in `Y`.
 - `P(Z)`: Rover position with value in `Z`.
 
+Graph to command left from orientation:
+
 ```mermaid
-CL-->ON-->OW
-CR-->ON-->OE
-CL-->OS-->OE
-CR-->OS-->OW
-CL-->OE-->OS
-CR-->OE-->ON
-CL-->OW-->ON
-CR-->OW-->OS
-CM-->ON-->PY
-CM-->OS-->PY
-CM-->OE-->PX
-CM-->OW-->PX
+graph DT;
+CL-->ON-->OW;
+CL-->OS-->OE;
+CL-->OE-->OS;
+CL-->OW-->ON;
+```
+
+Graph to command right from orientation:
+
+```mermaid
+graph DT;
+CR-->ON-->OE;
+CR-->OS-->OW;
+CR-->OE-->ON;
+CR-->OW-->OS;
+```
+
+Graph to command move from orientation:
+
+```mermaid
+graph DT;
+CM-->ON-->PY;
+CM-->OS-->PY;
+CM-->OE-->PX;
+CM-->OW-->PX;
 ```
 
 ### Test it
