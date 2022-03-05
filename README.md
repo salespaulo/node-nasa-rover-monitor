@@ -8,6 +8,11 @@ I hope you enjoy!
 
 ### Solution
 
+The plateau representation in planet Mars is coordinates by:
+
+- Bottom left: `x=0` e `y=0` coordinates
+- Upper right: Is a custom one coordinates.
+
 The rover position is the cartesian coordinates:
 
 - `x`: The horizontal 2D coordinate.
@@ -44,31 +49,31 @@ The legends to solution graph below:
 Graph to command left from orientation:
 
 ```mermaid
-graph DT;
-CL-->ON-->OW;
-CL-->OS-->OE;
-CL-->OE-->OS;
-CL-->OW-->ON;
+graph TD;
+CL(Command Left) -->|on rover in| ON(Orientation North) -->|changes rover to| OW(Orientation West);
+CL(Command Left) -->|on rover in| OS(Orientation South) -->|changes rover to| OE(Orientation East);
+CL(Command Left) -->|on rover in| OE(Orientation East) -->|changes rover to| OS(Orientation South);
+CL(Command Left) -->|on rover in| OW(Orientation West) -->|changes rover to| ON(Orientation North);
 ```
 
 Graph to command right from orientation:
 
 ```mermaid
-graph DT;
-CR-->ON-->OE;
-CR-->OS-->OW;
-CR-->OE-->ON;
-CR-->OW-->OS;
+graph TD;
+CR(Command Right) -->|on rover in| ON(Orientation North) -->|changes rover to| OE(Orientation East);
+CR(Command Right) -->|on rover in| OS(Orientation South) -->|changes rover to| OW(Orientation West);
+CR(Command Right) -->|on rover in| OE(Orientation East) -->|changes rover to| ON(Orientation North);
+CR(Command Right) -->|on rover in| OW(Orientation West) -->|changes rover to| OS(Orientation South);
 ```
 
 Graph to command move from orientation:
 
 ```mermaid
-graph DT;
-CM-->ON-->PY;
-CM-->OS-->PY;
-CM-->OE-->PX;
-CM-->OW-->PX;
+graph TD;
+CM(Command Move) -->|on rover in| ON(Orientation North) -->|changes rover to| PYP(Position y + 1);
+CM(Command Move) -->|on rover in| OS(Orientation South) -->|changes rover to| PYM(Position y - 1);
+CM(Command Move) -->|on rover in| OE(Orientation East) -->|changes rover to| PXP(Position x + 1);
+CM(Command Move) -->|on rover in| OW(Orientation West) -->|changes rover to| PXM(Position x - 1);
 ```
 
 ### Test it
