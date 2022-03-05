@@ -50,13 +50,23 @@ const print = (plateau, rover = null) => {
   console.log(" " + sx.join(""));
 };
 
+if (process.argv.length < 3) {
+  console.error(
+    `Uses: node ${__filename} [fileTxtToImport] (--print) (--debug)`
+  );
+  process.exit(1);
+}
+
+const filename = process.argv[2];
+const printIt = process.argv[3] === "--print";
+const debugIt = process.argv[4] === "--debug";
 const roverApp = new RoverApplication();
 
 roverApp.eventEmitter.on("on-plateau-monitor", (plateau) => {
   const { bottomLeft, upperRight } = plateau;
 
-  console.log(`${log} Mars Plateau Bottom Left:`, bottomLeft);
-  console.log(`${log} Mars Plateau Upper Right:`, upperRight);
+  console.log(`${log} Mars plateau bottom left:`, bottomLeft);
+  console.log(`${log} Mars plateau upper right:`, upperRight);
 });
 
 roverApp.eventEmitter.on("on-info-rovers", (infoRovers) => {
@@ -65,7 +75,10 @@ roverApp.eventEmitter.on("on-info-rovers", (infoRovers) => {
     const { rover, plateau } = control;
 
     console.log(`${log} Rover landed on plateau:`, rover);
-    print(plateau, rover);
+
+    if (printIt) {
+      print(plateau, rover);
+    }
   });
 });
 
@@ -73,22 +86,23 @@ roverApp.eventEmitter.on("on-rover-apply-command", (command) => {
   const { cmd, control } = command;
   const { rover } = control;
 
-  console.log(`${log} Rover command ${cmd} on plateau:`, rover);
+  if (debugIt) {
+    console.log(`${log} Rover command ${cmd} on plateau:`, rover);
+  }
 });
 
 roverApp.eventEmitter.on("on-rover-complete-command", (control) => {
   const { rover, plateau } = control;
 
-  console.log(`${log} Rover complete commands on plateau:`, rover);
-  print(plateau, rover);
+  if (printIt || debugIt) {
+    console.log(`${log} Rover complete commands on plateau:`, rover);
+  }
+
+  if (printIt) {
+    print(plateau, rover);
+  }
 });
 
-if (process.argv.length < 3) {
-  console.error(`Uses: node ${__filename} [fileTxtToImport]`);
-  process.exit(1);
-}
-
-const filename = process.argv[2];
 const buffer = fs.readFileSync(filename);
 const output = roverApp.start(buffer.toString());
 

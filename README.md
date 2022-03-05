@@ -33,6 +33,12 @@ npm install
 node app/start ./import-data-test.txt
 ```
 
+Script parameters:
+
+- `[fileTxtToImport]`: Path to text file to import commands.
+- `--print`: Print grid with rover char representation.
+- `--debug`: Show debug infos.
+
 > It uses the text file for testing, this is located into project [here](./import-data-test.txt).
 
 ### Solution
