@@ -117,7 +117,7 @@ heading.
 
 ### Example
 
-1. Input the upper-right coordinates x and y.
+1. Input the upper-right plateau coordinates, x and y.
 2. Input first rover coordinates and orientation.
 3. Input commands to the first rover.
 4. Input second rover coordinates and orientation.
@@ -142,3 +142,4 @@ MMRMMRMRRM
 ### Dependencies
 
 - [jest](https://jestjs.io/docs/getting-started): JavaScript Testing Framework with a focus on simplicity.
+- [prettier](https://prettier.io/): An opinionated code formatter.
