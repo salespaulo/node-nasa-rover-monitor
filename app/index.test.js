@@ -6,13 +6,76 @@ const {
   RoverApplication,
   RoverAppInvalidLengthCommandsError,
 } = require("./index");
+const { MarsPlateau, CartesianPoint } = require("./mars");
+const { Rover } = require("./rover");
+const { RoverMonitor } = require("./monitor");
+
+test("Rover app parse letters to plateau instance", () => {
+  const roverApp = new RoverApplication();
+  const letters = "5 5";
+  const output = roverApp.parseToPlateau(letters);
+  const expected = new MarsPlateau(new CartesianPoint(5, 5));
+
+  expect(output).toStrictEqual(expected);
+});
+
+test("Rover app parse invalid letters to plateau instance", () => {
+  const roverApp = new RoverApplication();
+  const letters = "5 5 N";
+
+  expect(() => roverApp.parseToPlateau(letters)).toThrow("Invalid Length");
+});
+
+test("Rover app parse letters to rover instance", () => {
+  const roverApp = new RoverApplication();
+  const letters = "1 2 N";
+  const output = roverApp.parseToRover(letters);
+  const expected = new Rover(1, 2, "N");
+
+  expect(output).toStrictEqual(expected);
+});
+
+test("Rover app parse invalid letters to rover instance", () => {
+  const roverApp = new RoverApplication();
+  const letters = "5 5 N N";
+
+  expect(() => roverApp.parseToRover(letters)).toThrow("invalid rover info");
+});
+
+test("Rover app create rover infos", () => {
+  const roverApp = new RoverApplication();
+  const roverMonitor = new RoverMonitor();
+  const commands = "1 2 N\nRMMLMRM".split("\n");
+
+  const infoRovers = roverApp.createInfoRovers(roverMonitor, commands);
+  expect(infoRovers.length).toEqual(1);
+
+  const output = infoRovers[0];
+
+  expect(output.control).not.toBeNull();
+  expect(output.control.rover).toStrictEqual(new Rover(1, 2, "N"));
+
+  expect(output.commands).not.toBeNull();
+  expect(output.commands.length).toEqual(7);
+});
+
+test("Rover app create rover infos", () => {
+  const roverApp = new RoverApplication();
+  const roverMonitor = new RoverMonitor();
+  const commands = "1 2 N\nRMMLMRM".split("\n");
+
+  const infoRovers = roverApp.createInfoRovers(roverMonitor, commands);
+  const outputRovers = roverApp.createOutputRovers(infoRovers);
+
+  expect(outputRovers).not.toBeNull();
+  expect(outputRovers.length).toBeGreaterThan(0);
+  expect(outputRovers).toEqual("4 3 E");
+});
 
 test("Rover app start with invalid null letters", () => {
   const roverApp = new RoverApplication();
 
-  expect(() => roverApp.start(null)).toThrow(
-    new RoverAppInvalidLengthCommandsError(0)
-  );
+  expect(() => roverApp.start(null)).toThrow("Has 0");
 });
 
 test("Rover app start with invalid length letters only 2 commands", () => {

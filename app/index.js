@@ -8,9 +8,9 @@
  * its current spot. 'M' means move forward one grid point, and maintain
  * the same heading.
  */
-const { RoverMonitor } = require("./monitor");
-const { Rover } = require("./rover");
 const { MarsPlateau, CartesianPoint } = require("./mars");
+const { Rover } = require("./rover");
+const { RoverMonitor } = require("./monitor");
 const { COMMANDS } = require("./control/command");
 
 const CMD_SEPARATOR = " ";
@@ -37,6 +37,19 @@ class RoverAppInvalidLengthCommandsError extends Error {
     super(
       `NASA Rover Application: Invalid Length Commands: Has ${lengthCommands} commands but it should be equal or more than 3 commands!`
     );
+  }
+}
+
+class RoverApplicationInfo {
+  /**
+   * Creates rover app information.
+   *
+   * @param {RoverControl} control The rover control instance.
+   * @param {string[]} commands The rover array commands.
+   */
+  constructor(control, commands) {
+    this.control = control;
+    this.commands = commands;
   }
 }
 
@@ -73,16 +86,45 @@ class RoverApplication {
       throw new RoverAppInvalidLengthCommandsError(commands.length);
     }
 
-    const infoPlateau = commands.shift().split(CMD_SEPARATOR);
-    const plateauUpperRightX = Number(infoPlateau[0]);
-    const plateauUpperRightY = Number(infoPlateau[1]);
-    const plateauUpperRight = new CartesianPoint(
-      plateauUpperRightX,
-      plateauUpperRightY
+    const plateauCmd = commands.shift();
+    const plateau = this.parseToPlateau(plateauCmd);
+
+    const infoRovers = this.createInfoRovers(
+      new RoverMonitor(plateau),
+      commands
     );
 
-    const plateau = new MarsPlateau(plateauUpperRight);
-    const roverMonitor = new RoverMonitor(plateau);
+    return this.createOutputRovers(infoRovers);
+  }
+
+  /**
+   * Creates output from rovers app information.
+   *
+   * @param {RoverApplicationInfo[]} infoRovers Rovers app information.
+   * @returns {string} The output rover position and orientation.
+   */
+  createOutputRovers(infoRovers) {
+    const outputRovers = infoRovers.map((info) => {
+      const { control, commands } = info;
+
+      commands.forEach((cmd) => control.execute(cmd));
+
+      const { rover } = control;
+      const { x, y, orientation } = rover;
+
+      return `${x} ${y} ${orientation}`;
+    });
+
+    return outputRovers.join("\n");
+  }
+
+  /**
+   * Creates rovers app information.
+   *
+   * @param {RoverMonitor} roverMonitor Rover monitor instance.
+   * @param {string[]} commands Array of commands to rover.
+   */
+  createInfoRovers(roverMonitor, commands) {
     const infoRovers = [];
 
     for (let i = 0; i < commands.length; i = i + 2) {
@@ -90,48 +132,79 @@ class RoverApplication {
         continue;
       }
 
-      const roverInfo = commands[i].split(CMD_SEPARATOR);
-      const roverCommands = commands[i + 1];
-      const isNotRoverInfo = roverInfo.length !== 3;
+      const rover = this.parseToRover(commands[i]);
+      const stringRoverCommands = commands[i + 1];
       const isNotRoverCommands =
-        !roverCommands.startsWith(COMMANDS[0]) &&
-        !roverCommands.startsWith(COMMANDS[1]) &&
-        !roverCommands.startsWith(COMMANDS[2]);
+        !stringRoverCommands.startsWith(COMMANDS[0]) &&
+        !stringRoverCommands.startsWith(COMMANDS[1]) &&
+        !stringRoverCommands.startsWith(COMMANDS[2]);
 
-      if (isNotRoverInfo || isNotRoverCommands) {
-        throw new RoverAppSyntaxCommandsError(
-          `Is invalid rover infos or not rover commands`
-        );
+      if (isNotRoverCommands) {
+        throw new RoverAppSyntaxCommandsError(`Is invalid rover commands`);
       }
 
-      const roverX = Number(roverInfo[0]);
-      const roverY = Number(roverInfo[1]);
-      const roverOrientation = roverInfo[2];
-
-      const rover = new Rover(roverX, roverY, roverOrientation);
       const roverControl = roverMonitor.addRover(rover);
+      const roverCommands = stringRoverCommands.split("");
+      const roverAppInfo = new RoverApplicationInfo(
+        roverControl,
+        roverCommands
+      );
 
-      infoRovers.push({
-        control: roverControl,
-        commands: roverCommands.split(""),
-      });
+      infoRovers.push(roverAppInfo);
     }
 
-    const outputRovers = infoRovers.map((info) => {
-      const { control, commands } = info;
+    return infoRovers;
+  }
 
-      commands.forEach((cmd) => control.execute(cmd));
+  /**
+   * Parse letters command to plateau instance.
+   *
+   * @param {string} letters Letters command to plateau upper right coordinates.
+   * @returns {MarsPlateau} Returns plateau in planet Mars.
+   */
+  parseToPlateau(letters) {
+    const infoPlateau = letters.split(CMD_SEPARATOR);
+    const isNotValidPlateau = infoPlateau.length !== 2;
 
-      const { rover } = control;
-      return `${rover.x} ${rover.y} ${rover.orientation}`;
-    });
+    if (isNotValidPlateau) {
+      throw new RoverAppInvalidLengthCommandsError(infoPlateau.length);
+    }
 
-    return outputRovers.join("\n");
+    const plateauUpperRightX = Number(infoPlateau[0]);
+    const plateauUpperRightY = Number(infoPlateau[1]);
+    const plateauUpperRight = new CartesianPoint(
+      plateauUpperRightX,
+      plateauUpperRightY
+    );
+
+    return new MarsPlateau(plateauUpperRight);
+  }
+
+  /**
+   * Parse letters command to rover instance with position and orientation.
+   *
+   * @param {string} command
+   * @returns {Rover} The rover instance from letters commands.
+   */
+  parseToRover(command) {
+    const roverInfo = command.split(CMD_SEPARATOR);
+    const isNotRoverInfo = roverInfo.length !== 3;
+
+    if (isNotRoverInfo) {
+      throw new RoverAppSyntaxCommandsError(`Is invalid rover infos`);
+    }
+
+    const roverX = Number(roverInfo[0]);
+    const roverY = Number(roverInfo[1]);
+    const roverOrientation = roverInfo[2];
+
+    return new Rover(roverX, roverY, roverOrientation);
   }
 }
 
 module.exports = {
   RoverApplication,
+  RoverApplicationInfo,
   RoverAppSyntaxCommandsError,
   RoverAppInvalidLengthCommandsError,
 };
