@@ -2,13 +2,11 @@
  * NASA rover application tests.
  */
 
-const {
-  RoverApplication,
-  RoverAppInvalidLengthCommandsError,
-} = require("./index");
 const { MarsPlateau, CartesianPoint } = require("./mars");
 const { Rover } = require("./rover");
 const { RoverMonitor } = require("./monitor");
+
+const { RoverApplication } = require("./index");
 
 test("Rover app parse letters to plateau instance", () => {
   const roverApp = new RoverApplication();
@@ -81,7 +79,7 @@ test("Rover app start with invalid null letters", () => {
 test("Rover app start with invalid length letters only 2 commands", () => {
   const roverApp = new RoverApplication();
 
-  expect(() => roverApp.start("5 5\n1 2 N")).toThrow("Invalid Length");
+  expect(() => roverApp.start("5 5\n1 2 N")).toThrow("Has 2");
 });
 
 test("Rover app start with invalid letters commands", () => {

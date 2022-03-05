@@ -30,7 +30,6 @@ class RoverControl {
     const validCommand = COMMANDS.indexOf(command) >= 0 ? command : "I";
 
     if (validCommand === "I") {
-      this.rover = this.rover;
       return this;
     }
 

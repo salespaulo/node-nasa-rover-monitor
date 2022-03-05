@@ -28,13 +28,9 @@ class Rover {
    * @see ORIENTATION
    */
   constructor(x = 0, y = 0, orientation = "N") {
-    this.x = this._coordinate(x);
-    this.y = this._coordinate(y);
+    this.x = x >= 0 ? x : 0;
+    this.y = y >= 0 ? y : 0;
     this.orientation = this._orientation(orientation);
-  }
-
-  _coordinate(coordinate) {
-    return coordinate >= 0 ? coordinate : 0;
   }
 
   _orientation(orientation) {

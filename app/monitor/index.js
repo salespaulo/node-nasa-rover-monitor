@@ -15,12 +15,12 @@ class RoverMonitor {
    * Creates rover monitor to the plateau in Mars.
    *
    * @param {MarsPlateau} plateau Plateau instance in Mars.
+   * @param {Mars} mars Instance of planet Mars.
    */
   constructor(plateau = PLATEAU_DEFAULT, mars = new Mars()) {
-    /* Creates the default planet Mars */
     this.mars = mars;
 
-    /* Getting the default plateau on Mars */
+    /* Getting the security plateau on Mars */
     this.plateau = mars.getPlateau(plateau.upperRight, plateau.bottomLeft);
   }
 
