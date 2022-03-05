@@ -21,7 +21,7 @@ class RoverMonitor {
     this.mars = mars;
 
     /* Getting the security plateau on Mars */
-    this.plateau = mars.getPlateau(plateau.upperRight, plateau.bottomLeft);
+    this.plateau = mars.getPlateau(plateau.upperRight.x, plateau.upperRight.y);
   }
 
   /**
