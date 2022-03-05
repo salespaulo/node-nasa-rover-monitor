@@ -5,7 +5,6 @@
 const {
   RoverApplication,
   RoverAppInvalidLengthCommandsError,
-  RoverAppInvalidCommandsError,
 } = require("./index");
 
 test("Rover app start with invalid null letters", () => {
