@@ -144,11 +144,83 @@ LMLMLMLMM
 MMRMMRMRRM
 ```
 
+- Rover { x: 1, y: 2, orientation: 'N' }
+
+```
+ ======
+|      |
+|      |
+|      |
+| N    |
+|      |
+|      |
+ ======
+```
+
+- Rover { x: 3, y: 3, orientation: 'E' }
+
+```
+ ======
+|      |
+|      |
+|   E  |
+|      |
+|      |
+|      |
+ ======
+```
+
 #### Expected Output
 ```
 1 3 N
 5 1 E
 ```
+
+- Rover command L on plateau: Rover { x: 1, y: 2, orientation: 'W' }
+- Rover command M on plateau: Rover { x: 0, y: 2, orientation: 'W' }
+- Rover command L on plateau: Rover { x: 0, y: 2, orientation: 'S' }
+- Rover command M on plateau: Rover { x: 0, y: 1, orientation: 'S' }
+- Rover command L on plateau: Rover { x: 0, y: 1, orientation: 'E' }
+- Rover command M on plateau: Rover { x: 1, y: 1, orientation: 'E' }
+- Rover command L on plateau: Rover { x: 1, y: 1, orientation: 'N' }
+- Rover command M on plateau: Rover { x: 1, y: 2, orientation: 'N' }
+- Rover command M on plateau: Rover { x: 1, y: 3, orientation: 'N' }
+- Rover complete commands on plateau: Rover { x: 1, y: 3, orientation: 'N' }
+
+```
+ ======
+|      |
+|      |
+| N    |
+|      |
+|      |
+|      |
+ ======
+```
+
+- Rover command M on plateau: Rover { x: 4, y: 3, orientation: 'E' }
+- Rover command M on plateau: Rover { x: 5, y: 3, orientation: 'E' }
+- Rover command R on plateau: Rover { x: 5, y: 3, orientation: 'S' }
+- Rover command M on plateau: Rover { x: 5, y: 2, orientation: 'S' }
+- Rover command M on plateau: Rover { x: 5, y: 1, orientation: 'S' }
+- Rover command R on plateau: Rover { x: 5, y: 1, orientation: 'W' }
+- Rover command M on plateau: Rover { x: 4, y: 1, orientation: 'W' }
+- Rover command R on plateau: Rover { x: 4, y: 1, orientation: 'N' }
+- Rover command R on plateau: Rover { x: 4, y: 1, orientation: 'E' }
+- Rover command M on plateau: Rover { x: 5, y: 1, orientation: 'E' }
+- Rover complete commands on plateau: Rover { x: 5, y: 1, orientation: 'E' }
+
+```
+ ======
+|      |
+|      |
+|      |
+|      |
+|     E|
+|      |
+ ======
+```
+
 
 ### Dependencies
 
