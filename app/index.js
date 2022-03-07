@@ -19,13 +19,6 @@ const { COMMANDS } = require("./control/command");
 const CMD_SEPARATOR = " ";
 const CMD_END = "\n";
 
-class RoverAppAlreadyExistsError extends Error {
-  constructor(rover) {
-    super(
-      `NASA Rover Application: Rover already exists in position x=${rover.x} and y=${rover.y}`
-    );
-  }
-}
 class RoverAppSyntaxCommandsError extends Error {
   /**
    * Rover app invalid commands error.
@@ -81,8 +74,40 @@ class RoverApplicationInfo {
  */
 class RoverApplication {
   constructor() {
+    this.monitor = null;
     this.eventEmitter = new events.EventEmitter();
   }
+
+  /**
+   * Start application with letters command to apply in rovers on a plateau in planet Mars.
+   *
+   * @param {ReadableStream} letters Letters command, separated by spaces and end by enter char.
+   * @return {Promise} Promise that resolves output from input stream.
+   */
+  startFromStream(stream) {
+    return new Promise((resolve, reject) => {
+      const outputs = [];
+
+      stream.on("error", (error) => {
+        reject(error);
+      });
+
+      stream.on("data", (chunk) => {
+        try {
+          const letters = chunk.toString();
+          const output = this.start(letters);
+          outputs.push(output);
+        } catch (e) {
+          reject(e);
+        }
+      });
+
+      stream.on("end", () => {
+        resolve(outputs.join("\n"));
+      });
+    });
+  }
+
   /**
    * Start application with letters command to apply in rovers on a plateau in planet Mars.
    *
@@ -95,18 +120,29 @@ class RoverApplication {
 
     const commands = letters.split(CMD_END);
 
-    if (commands.length < 3) {
+    if (commands.length < 2) {
       throw new RoverAppInvalidLengthCommandsError(commands.length);
     }
 
-    const plateauCmd = commands.shift();
-    const plateau = this.parseToPlateau(plateauCmd);
+    const hasPlateauCommand = commands[0].split(CMD_SEPARATOR).length === 2;
 
-    const monitor = new RoverMonitor(plateau);
-    this.eventEmitter.emit("on-plateau-monitor", plateau);
+    if (hasPlateauCommand && commands.length === 2) {
+      throw new RoverAppInvalidLengthCommandsError(commands.length);
+    }
 
-    const infoRovers = this.createInfoRovers(monitor, commands);
+    if (!hasPlateauCommand && !this.monitor) {
+      throw new RoverAppSyntaxCommandsError("Not init plateau on Mars!");
+    }
 
+    if (hasPlateauCommand) {
+      const plateauCmd = commands.shift();
+      const plateau = this.parseToPlateau(plateauCmd);
+
+      this.monitor = new RoverMonitor(plateau);
+      this.eventEmitter.emit("on-plateau-monitor", plateau);
+    }
+
+    const infoRovers = this.createInfoRovers(this.monitor, commands);
     return this.createOutputRovers(infoRovers);
   }
 
@@ -160,17 +196,6 @@ class RoverApplication {
       }
 
       const rover = this.parseToRover(commands[i]);
-      const alreadyHasRover = infoRovers.find((info) => {
-        const { control } = info;
-        const { x, y } = control.rover;
-
-        return rover.x === x && rover.y === y;
-      });
-
-      if (alreadyHasRover) {
-        throw new RoverAppAlreadyExistsError(rover);
-      }
-
       const roverControl = roverMonitor.addRover(rover);
       const roverCommands = stringRoverCommands.split("");
       const roverAppInfo = new RoverApplicationInfo(
