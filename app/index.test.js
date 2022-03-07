@@ -1,12 +1,16 @@
 /**
  * NASA rover application tests.
  */
+const { Readable } = require("stream");
 
 const { MarsPlateau, CartesianPoint } = require("./mars");
 const { Rover } = require("./rover");
 const { RoverMonitor } = require("./monitor");
 
-const { RoverApplication } = require("./index");
+const {
+  RoverApplication,
+  RoverAppInvalidLengthCommandsError,
+} = require("./index");
 
 test("Rover app parse letters to plateau instance", () => {
   const roverApp = new RoverApplication();
@@ -106,18 +110,56 @@ test("Rover app start with - FoxBit Test", () => {
   expect(output).toEqual("1 3 N\n5 1 E");
 });
 
-test("Rover app start with already rover in position", () => {
-  const roverApp = new RoverApplication();
-
-  const letters = "5 5\n1 2 N\nLMLMLMLMM\n1 2 E\nMMRMMRMRRM";
-
-  expect(() => roverApp.start(letters)).toThrow("Rover already exists");
-});
-
 test("Rover app start with rover in position result x=8 and y=8", () => {
   const roverApp = new RoverApplication();
 
   const letters = "10 5\n7 8 W\nMMMLLMMMM";
   const output = roverApp.start(letters);
   expect(output).toEqual("8 8 E");
+});
+
+test("Rover app start with rover in position result x=8 and y=8 with stream", async () => {
+  const roverApp = new RoverApplication();
+
+  const stream = Readable.from(["10 5\n7 8 W\nMMMLLMMMM"]);
+
+  stream.on("data", (chunk) => {
+    expect(chunk).toEqual("10 5\n7 8 W\nMMMLLMMMM");
+  });
+
+  await expect(roverApp.startFromStream(stream)).resolves.toEqual("8 8 E");
+});
+
+test("Rover app start with invalid length letters only 2 commands with stream", async () => {
+  const roverApp = new RoverApplication();
+
+  await expect(
+    roverApp.startFromStream(Readable.from(["5 5\n1 2 N"]))
+  ).rejects.toThrow("Has 2");
+});
+
+test("Rover app start with invalid letters commands with stream", async () => {
+  const roverApp = new RoverApplication();
+  const stream = Readable.from(["5 5\n0 0 N\nXXMM\n"]);
+
+  await expect(roverApp.startFromStream(stream)).rejects.toThrow(
+    "Invalid Syntax"
+  );
+});
+
+test("Rover app start with correct letters commands with stream", async () => {
+  const roverApp = new RoverApplication();
+  const stream = Readable.from(["5 5\n0 0 N\nRMM\n"]);
+
+  await expect(roverApp.startFromStream(stream)).resolves.toEqual("2 0 E");
+});
+
+test("Rover app start with - FoxBit Test with stream", async () => {
+  const roverApp = new RoverApplication();
+
+  const stream = Readable.from(["5 5\n1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM"]);
+
+  await expect(roverApp.startFromStream(stream)).resolves.toEqual(
+    "1 3 N\n5 1 E"
+  );
 });
