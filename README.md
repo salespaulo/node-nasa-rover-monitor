@@ -24,7 +24,7 @@ npm install
 npm run watch
 ```
 
-### Importing text file
+### Importing text file from string
 
 To import text file execute `app/start` script passing path to file commands.
 
@@ -36,10 +36,67 @@ node app/start ./import-data-test.txt
 Script parameters:
 
 - `[fileTxtToImport]`: Path to text file to import commands.
-- `--print`: Print grid with rover char representation.
+- `--utils`: Print grid with rover char representation.
 - `--debug`: Show debug infos.
 
 > It uses the text file for testing, this is located into project [here](./import-data-test.txt).
+
+### Importing text file from stream
+
+To import text file execute `app/start-stream` script passing path to file commands.
+
+```
+npm install
+node app/start-stream ./import-data-test.txt
+```
+
+Script parameters:
+
+- `[fileTxtToImport]`: Path to text file to import commands.
+- `--utils`: Print grid with rover char representation.
+- `--debug`: Show debug infos.
+
+> It uses the text file for testing, this is located into project [here](./import-data-test.txt).
+
+### Code example
+
+Read letters from a string:
+
+```node
+const { Readable } = require('stream')
+const { RoverApplication } = require("./index");
+
+const roverApp = new RoverApplication();
+const letters = "5 5\n1 2 N\nLMLMLMLMM\n1 2 E\nMMRMMRMRRM";
+
+const output = roverApp.start(letters);
+
+console.log(`Output rover monitor from string:`);
+console.log(output);
+```
+
+Read letters from a stream:
+
+```node
+const { Readable } = require('stream')
+const { RoverApplication } = require("./index");
+
+const roverApp = new RoverApplication();
+const letters = "5 5\n1 2 N\nLMLMLMLMM\n1 2 E\nMMRMMRMRRM";
+
+const stream = Readable.from([letters])
+
+roverApp
+    .startFromStream(stream)
+    .then((outputStream) => {
+        console.log(`Output rover monitor from stream:`);
+        console.log(outputStream);
+    })
+    .catch((e) => {
+        console.log(`Output rover monitor from stream:`);
+        console.error(e)
+    });
+```
 
 ### Solution
 
