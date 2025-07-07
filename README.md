@@ -63,7 +63,6 @@ Script parameters:
 Read letters from a string:
 
 ```node
-const { Readable } = require('stream')
 const { RoverApplication } = require("./index");
 
 const roverApp = new RoverApplication();
